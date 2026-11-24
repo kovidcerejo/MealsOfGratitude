@@ -1,40 +1,15 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
+{% from "components/recipe_collection.html" import search, collection %}
 
-{% block title %}
-    Recipes
-{% endblock %}
+{% block title %}Manage Recipes | Meals of Gratitude{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1>Edit/Delete Recipes</h1>
-        <br>
-        <div class="mb-3 d-flex justify-content-center">
-            <input type="text" id="recipeSearch" class="form-control form-control-lg" placeholder="Search by recipe/volunteer name">
-        </div>
-        <div id="noResults" class="alert alert-primary" style="display: none;">
-            No recipes found.
-        </div>
-        <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-4">
-            {% for recipe in recipes %}
-            <div class="col recipe-card">
-                <div class="card h-100 d-flex flex-column">
-                    <div class="ratio ratio-16x9">
-                        <img src="{{ url_for('static', filename=recipe.image_url if recipe.image_url else 'images/MoG_logo.PNG') }}"
-                            class="card-img-top"
-                            style="object-fit: cover;">
-                    </div>
-                    <div class="card-body d-flex flex-column justify-content-between">
-                        <h5 class="card-title">
-                            <a href="/recipes/{{ recipe.id }}">{{ recipe.recipe_name }}</a>
-                        </h5>
-                        <p class="card-text">{{ recipe.volunteer_name }}</p>
-                        <a href="/admin/edit-recipe-{{ recipe.id }}" class="btn btn-warning">Edit/delete</a>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
+    {{ page_header('Manage recipes', '', '/admin/', 'Dashboard') }}
+    <div class="collection-toolbar">
+        {{ search() }}
     </div>
+    {{ collection(recipes, admin=true) }}
 {% endblock %}
 {% block scripts %}
     <script>

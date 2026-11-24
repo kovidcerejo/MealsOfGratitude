@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Set Teacher Code
-{% endblock %}
+{% block title %}Set staff code | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
-    <h1>Set Teacher Code</h1>
-    <p class="fs-4">Current Code: {{ current_code }}</p>
-    <form action="/admin/set-teacher-code" method="POST" class="container" id="set-code-form">
+    {{ page_header('Set staff code', '', '/admin/', 'Dashboard') }}
+    <p class="record-meta"><strong>Current code</strong> <code>{{ current_code }}</code></p>
+    <form action="/admin/set-teacher-code" method="POST" class="form-panel" id="set-code-form">
         <label for="new-code" class="form-label">Enter new code</label>
         <input type="text" class="form-control mb-3" autofocus autocomplete="off" required name="code" id="new-code">
         <button type="submit" class="btn btn-primary">Set Code</button>

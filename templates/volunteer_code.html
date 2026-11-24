@@ -1,15 +1,14 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Enter Volunteer Code
-{% endblock %}
+{% block title %}Enter your volunteer code | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
-    <h1>Enter volunteer code</h1>
-    <p class="fs-4">Please contact Mugdha to get your code to access this page.</p>
-    <form action="/volunteers/enter-code" method="POST" class="container" id="volunteer-code-form">
+    {{ page_header('Enter your volunteer code', 'Contact the program coordinator if you need the volunteer code.', "/", "Home") }}
+    <form action="/volunteers/enter-code" method="POST" class="form-panel" id="volunteer-code-form">
         <label for="volunteer-code" class="form-label">Volunteer Code</label>
         <input type="password" name="code" autofocus autocomplete="off" class="form-control mb-3" id="volunteer-code" required>
-        <button type="submit" class="btn btn-primary">Submit Code</button>
+        <button type="submit" class="btn btn-primary">Continue to volunteer portal</button>
     </form>
 {% endblock %}

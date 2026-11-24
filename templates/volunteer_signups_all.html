@@ -1,60 +1,73 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    All Signups
-{% endblock %}
+{% block title %}Signup history | Meals of Gratitude{% endblock %}
 
 {% block body %}
-    <h1>All Signups</h1>
-    <p class=fs-5>Not what you're looking for? View <a href="/volunteers/signups">current signups</a></p>
-    <div class="row">
-        <div class="col-md-6">
-            <h3>Meals</h3>
-            <table class="container table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Drop-off Date</th>
-                        <th>Volunteer Name</th>
-                        <th>Meal Name</th>
-                        <th>Teacher Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for meal in meals %}
+    {{ page_header('Signup history', 'Meals and gift cards offered this school year.', '/volunteers/', 'Volunteer portal') }}
+    <div class="table-toolbar"><a class="text-action" href="/volunteers/signups">View current signups</a></div>
+    <div class="table-stack">
+        <section class="table-section">
+            <div class="section-heading">
+                <h2 id="table-heading-1">Meals</h2>
+            </div>
+            <p class="table-scroll-hint table-scroll-standard">Scroll to see all columns.</p>
+            <div class="table-wrap" role="region" aria-labelledby="table-heading-1" tabindex="0">
+                <table class="data-table data-table-standard">
+                    <thead>
                         <tr>
-                            <td>{{ meal.date.strftime('%b') }} {{ meal.date.day }}</td>
-                            <td>{{ meal.volunteer_name }}</td>
-                            <td><a href="/recipes/{{ meal.recipe_id }}">{{ meal.meal_name }}</a></td>
-                            <td>
-                                {{ meal.teacher_name if meal.teacher_name else "N/A"}}
-                            </td>
+                            <th scope="col">Drop-off Date</th>
+                            <th scope="col">Volunteer Name</th>
+                            <th scope="col">Meal Name</th>
+                            <th scope="col">Teacher Name</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-        <div class="col-md-6">
-            <h3>Gift Cards</h3>
-            <table class="container table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>Drop-off Date</th>
-                        <th>Volunteer Name</th>
-                        <th>Gift Card Name</th>
-                        <th>Teacher Name</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for gc in gcs %}
+                    </thead>
+                    <tbody>
+                        {% for meal in meals %}
+                            <tr>
+                                <td>{{ meal.date.strftime('%b') }} {{ meal.date.day }}</td>
+                                <td>{{ meal.volunteer_name }}</td>
+                                <td><a href="/recipes/{{ meal.recipe_id }}">{{ meal.meal_name }}</a></td>
+                                <td>
+                                    {{ meal.teacher_name if meal.teacher_name else "N/A"}}
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td class="table-empty" colspan="4">No meal signups yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="table-section">
+            <div class="section-heading">
+                <h2 id="table-heading-2">Gift cards</h2>
+            </div>
+            <p class="table-scroll-hint table-scroll-standard">Scroll to see all columns.</p>
+            <div class="table-wrap" role="region" aria-labelledby="table-heading-2" tabindex="0">
+                <table class="data-table data-table-standard">
+                    <thead>
                         <tr>
-                            <td>{{ gc.date.strftime('%b') }} {{ gc.date.day }}</td>
-                            <td>{{ gc.volunteer_name }}</td>
-                            <td>{{ gc.gc_name }}</td>
-                            <td>{{ gc.teacher_name if gc.teacher_name else "N/A" }}</td>
+                            <th scope="col">Drop-off Date</th>
+                            <th scope="col">Volunteer Name</th>
+                            <th scope="col">Gift Card Name</th>
+                            <th scope="col">Teacher Name</th>
                         </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {% for gc in gcs %}
+                            <tr>
+                                <td>{{ gc.date.strftime('%b') }} {{ gc.date.day }}</td>
+                                <td>{{ gc.volunteer_name }}</td>
+                                <td>{{ gc.gc_name }}</td>
+                                <td>{{ gc.teacher_name if gc.teacher_name else "N/A" }}</td>
+                            </tr>
+                        {% else %}
+                            <tr><td class="table-empty" colspan="4">No gift card signups yet.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </div>
 {% endblock %}

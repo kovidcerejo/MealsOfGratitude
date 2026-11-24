@@ -1,15 +1,14 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Enter Staff Code
-{% endblock %}
+{% block title %}Enter your staff code | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
-    <h1>Enter staff code</h1>
-    <p class="fs-4">Please contact Mugdha to get your code.</p>
-    <form action="/teachers/enter-code" method="POST" class="container" id="volunteer-code-form">
+    {{ page_header('Enter your staff code', 'Contact the program coordinator if you need the staff code.', "/", "Home") }}
+    <form action="/teachers/enter-code" method="POST" class="form-panel" id="volunteer-code-form">
         <label for="teacher-code" class="form-label">Staff Code</label>
         <input type="password" name="code" autofocus autocomplete="off" class="form-control mb-3" id="teacher-code" required>
-        <button type="submit" class="btn btn-primary">Submit Code</button>
+        <button type="submit" class="btn btn-primary">Continue to staff portal</button>
     </form>
 {% endblock %}

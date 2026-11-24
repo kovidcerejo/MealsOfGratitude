@@ -1,21 +1,54 @@
-<!DOCTYPE html>
-
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="initial-scale=1, width=device_width">
-        <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
-        <title>{% block title %}{% endblock %}</title>
-    </head>
-    <body>
-        <main class="container text-center">
-            {% block body %}{% endblock %}   
-        </main>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script src="https://twitter.github.io/typeahead.js/releases/latest/typeahead.bundle.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-        {% block scripts %}{% endblock %}
-    </body>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f8f5ed">
+    <link href="{{ url_for('static', filename='vendor/bootstrap/bootstrap.min.css') }}" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>{% block title %}{% endblock %}</title>
+</head>
+{% set admin_area = request.path.startswith('/admin') %}
+{% set admin_workspace = admin_area and session.get('logged_in') %}
+<body class="{% if admin_area %}admin-area{% else %}public-area{% endif %}">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="site-header">
+        <div class="site-header-inner shell">
+            <a class="wordmark" href="/" aria-label="Meals of Gratitude home">
+                <span class="wordmark-mark" aria-hidden="true"><img src="{{ url_for('static', filename='favicon.ico') }}" alt="" width="24" height="24"></span>
+                <span>Meals of Gratitude</span>
+            </a>
+            {% if admin_workspace %}
+                <nav class="site-nav" aria-label="Administration">
+                    <a href="/admin/"{% if request.endpoint == 'admin' %} aria-current="page"{% endif %}>Dashboard</a>
+                    <a href="/admin/override-signups"{% if request.endpoint == 'override_signup' %} aria-current="page"{% endif %}>Signups</a>
+                    <a href="/admin/logout">Log out</a>
+                </nav>
+            {% else %}
+                <nav class="site-nav" aria-label="Main navigation">
+                    <a href="/volunteers/"{% if request.endpoint == 'volunteers' %} aria-current="page"{% elif request.path.startswith('/volunteers/') %} class="nav-active"{% endif %}>Volunteers</a>
+                    <a href="/teachers/"{% if request.endpoint == 'teachers' %} aria-current="page"{% elif request.path.startswith('/teachers/') %} class="nav-active"{% endif %}>Staff</a>
+                    <a href="/recipes/"{% if request.endpoint == 'recipes' %} aria-current="page"{% elif request.path.startswith('/recipes/') %} class="nav-active"{% endif %}>Recipes</a>
+                </nav>
+            {% endif %}
+        </div>
+    </header>
+
+    <main id="main-content" tabindex="-1" class="shell main-content {% block page_class %}{% endblock %}">
+        {% block body %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="shell site-footer-inner">
+            <a class="footer-name" href="/">Meals of Gratitude</a>
+            <span>A Northview High School community program</span>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='vendor/jquery/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/typeahead/typeahead.bundle.js') }}"></script>
+    <script src="{{ url_for('static', filename='vendor/bootstrap/bootstrap.bundle.min.js') }}" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q"></script>
+    {% block scripts %}{% endblock %}
+</body>
 </html>

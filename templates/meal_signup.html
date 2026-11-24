@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header, state %}
 
-{% block title %}
-    Volunteer Meal Signup 
-{% endblock %}
+{% block title %}Volunteer meal signup | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
     {% if date.volunteer_start <= today and today <= date.volunteer_end %}
-        <h1>{{ date.month_year }} Meal Signup</h1>
-        <form method="POST" action="/volunteers/meal-signup" class="container" id="volunteer-form">
+        {{ page_header('%s meal signup'|format(date.month_year), 'Choose a recipe and pick a drop-off date.', '/volunteers/', 'Volunteer portal') }}
+        <form method="POST" action="/volunteers/meal-signup" class="form-panel" id="volunteer-form">
             <div class="mb-3">
                 <label for="typeahead-name" class="form-label">Volunteer Name</label>
                 <input type="text" name="name" id="typeahead-name" required autocomplete="off" class="form-control">
@@ -26,12 +26,10 @@
                 <label for="date" class="form-label">Drop-off Date<br>({{ start_datetime.strftime('%m/%d') }} - {{ end_datetime.strftime('%m/%d') }})</label>
                 <input type="date" name="date" class="form-control" id="date" min="{{ start }}" max="{{ end }}" required>
             </div>
-            <button type="submit" class="btn align-self-end mb-3 btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Save signup</button>
         </form>
     {% else %}
-        <h1>Signup Deadline Passed</h1>
-        <p class="fs-5">Sorry, the deadline for submitting a signup has passed. You can still signup for next month when it opens.</p>
-        <a href="/volunteers" class="btn btn-primary">Volunteer Home</a>
+        {{ state('Signup deadline passed', 'Check the volunteer portal when the next signup window opens.', '/volunteers', 'Volunteer portal') }}
     {% endif %}
 {% endblock %}
 {% block scripts %}

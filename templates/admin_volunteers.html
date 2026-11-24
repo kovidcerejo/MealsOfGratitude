@@ -1,36 +1,47 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Volunteer List
-{% endblock %}
+{% block title %}Volunteer directory | Meals of Gratitude{% endblock %}
 
 {% block body %}
-    <h1>Volunteer List</h1>
-    <a href="/admin/volunteers/add" class="btn btn-primary">Add a new volunteer</a>
-    <table class="container table table-striped w-50">
-        <thead>
-            <tr>
-                <th></th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Phone</th>
-                <th>Joined</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for volunteer in volunteers %}
-            <tr>
-                <td>
-                    <button class="btn btn-danger btn-sm delete-button" data-id="{{ volunteer.id }}">Delete</button>
-                </td>
-                <td>{{ volunteer.name }}</td>
-                <td>{{ volunteer.email }}</td>
-                <td>{{ volunteer.phone }}</td>
-                <td>{{ volunteer.date_added.strftime('%b %Y') }}</td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {{ page_header('Volunteer directory', '', '/admin/', 'Dashboard') }}
+    <div class="table-toolbar"><a class="btn btn-primary" href="/admin/volunteers/add">Add a volunteer</a></div>
+    <div class="table-stack">
+        <section class="table-section">
+            <div class="section-heading">
+                <h2 id="table-heading-1">Volunteers</h2>
+            </div>
+            <p class="table-scroll-hint table-scroll-standard">Scroll to see all columns.</p>
+            <div class="table-wrap" role="region" aria-labelledby="table-heading-1" tabindex="0">
+                <table class="data-table data-table-standard">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col">Joined</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for volunteer in volunteers %}
+                        <tr>
+                            <td>{{ volunteer.name }}</td>
+                            <td>{{ volunteer.email }}</td>
+                            <td>{{ volunteer.phone }}</td>
+                            <td>{{ volunteer.date_added.strftime('%b %Y') }}</td>
+                            <td>
+                                <button class="btn btn-danger btn-sm delete-button" data-id="{{ volunteer.id }}">Delete</button>
+                            </td>
+                        </tr>
+                        {% else %}
+                            <tr><td class="table-empty" colspan="5">No volunteers have been added.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 {% endblock %}
 {% block scripts %}
     <script>

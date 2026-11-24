@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Set Deadlines
-{% endblock %}
+{% block title %}Add monthly deadlines | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
-    <h1>Set Volunteer Deadline and Dropoff Dates</h1>
-    <form method="POST" action="/admin/deadlines/set" class="container" id="volunteer-date-form">
+    {{ page_header('Add monthly deadlines', 'Set the volunteer deadline and the drop-off window.', '/admin/deadlines/', 'Deadlines') }}
+    <form method="POST" action="/admin/deadlines/set" class="form-panel" id="volunteer-date-form">
         <div class="mb-3">
             <label for="month" class="form-label">Month</label>
             <input type="month" id="month" name="month" required value="{{ next_month }}" class="form-control"> 

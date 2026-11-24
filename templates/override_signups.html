@@ -1,74 +1,93 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Override Meal Signups
-{% endblock %}
+{% block title %}Manage signups | Meals of Gratitude{% endblock %}
 
 {% block body %}
-    <h1>Current Signups</h1>
-    <h3>Meals</h3>
-    <a href="/admin/add-meal" class="btn btn-primary mb-2">Add Meal</a>
-    <table class="container table table-striped w-75 table-bordered">
-        <thead>
-            <tr>
-                <th>Volunteer Name</th>
-                <th>Meal Name</th>
-                <th>Drop-off Date</th>
-                <th>Teacher Name</th>
-                <th>Teacher Email</th>
-                <th>Edit/Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for meal in meals %}
-                <tr>
-                    <td>{{ meal.volunteer_name }}</td>
-                    <td><a href="/recipes/{{ meal.recipe_id }}">{{ meal.meal_name }}</a></td>
-                    <td>{{ meal.date.strftime('%b') }} {{ meal.date.day }}</td>
-                    <td>{{ meal.teacher_name if meal.teacher_name else "N/A" }}</td>
-                    <td>{{ meal.teacher_email if meal.teacher_email else "N/A" }}</td>
-                    <td>
-                        <a href="/admin/edit-meal-{{ meal.meal_id}}" class="btn btn-warning">Edit/Delete</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <h3>Gift Cards</h3>
-    <a href="/admin/add-gc" class="btn btn-primary mb-2">Add GC</a>
-    <table class="container table table-striped w-75 table-bordered">
-        <thead>
-            <tr>
-                <th>Volunteer Name</th>
-                <th>Gift Card Name</th>
-                <th>Drop-off Date</th>
-                <th>Teacher Name</th>
-                <th>Teacher Email</th>
-                <th>Hidden?</th>
-                <th>Edit/Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for gc in gcs %}
-                <tr>
-                    <td>{{ gc.volunteer_name }}</td>
-                    <td>{{ gc.gc_name }}</td>
-                    <td>{{ gc.date.strftime('%b') }} {{ gc.date.day }}</td>
-                    <td>{{ gc.teacher_name if gc.teacher_name else "N/A" }}</td>
-                    <td>{{ gc.teacher_email if gc.teacher_email else "N/A" }}</td>
-                    <td>
-                        <div class="form-check form-switch d-flex justify-content-center">
-                                <input class="form-check-input gc-switch" type="checkbox" role="switch"  
-                                data-gc-id="{{ gc.gc_id }}"{% if gc.hidden %}checked{% endif %}>
-                        </div>
-                    </td>
-                    <td>
-                        <a href="/admin/edit-gc-{{ gc.gc_id }}" class="btn btn-warning">Edit/Delete</a>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {{ page_header('Manage signups', 'Add or edit this month’s signups, including after the volunteer deadline.', '/admin/', 'Dashboard') }}
+    <div class="table-stack">
+        <section class="table-section">
+            <div class="section-heading">
+                <h2 id="table-heading-1">Meals</h2>
+                <a href="/admin/add-meal" class="btn btn-primary">Add meal</a>
+            </div>
+            <p class="table-scroll-hint table-scroll-wide">Scroll to see all columns.</p>
+            <div class="table-wrap" role="region" aria-labelledby="table-heading-1" tabindex="0">
+                <table class="data-table data-table-wide">
+                    <thead>
+                        <tr>
+                            <th scope="col">Volunteer Name</th>
+                            <th scope="col">Meal Name</th>
+                            <th scope="col">Drop-off Date</th>
+                            <th scope="col">Teacher Name</th>
+                            <th scope="col">Teacher Email</th>
+                            <th scope="col">Edit or delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for meal in meals %}
+                            <tr>
+                                <td>{{ meal.volunteer_name }}</td>
+                                <td><a href="/recipes/{{ meal.recipe_id }}">{{ meal.meal_name }}</a></td>
+                                <td>{{ meal.date.strftime('%b') }} {{ meal.date.day }}</td>
+                                <td>{{ meal.teacher_name if meal.teacher_name else "N/A" }}</td>
+                                <td>{{ meal.teacher_email if meal.teacher_email else "N/A" }}</td>
+                                <td>
+                                    <a href="/admin/edit-meal-{{ meal.meal_id}}" class="btn btn-warning">Edit or delete</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td class="table-empty" colspan="6">No meal signups this month.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="table-section">
+            <div class="section-heading">
+                <h2 id="table-heading-2">Gift cards</h2>
+                <a href="/admin/add-gc" class="btn btn-primary">Add gift card</a>
+            </div>
+            <p class="table-scroll-hint table-scroll-wide">Scroll to see all columns.</p>
+            <div class="table-wrap" role="region" aria-labelledby="table-heading-2" tabindex="0">
+                <table class="data-table data-table-wide">
+                    <thead>
+                        <tr>
+                            <th scope="col">Volunteer Name</th>
+                            <th scope="col">Gift Card Name</th>
+                            <th scope="col">Drop-off Date</th>
+                            <th scope="col">Teacher Name</th>
+                            <th scope="col">Teacher Email</th>
+                            <th scope="col">Hide from Staff</th>
+                            <th scope="col">Edit or delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for gc in gcs %}
+                            <tr>
+                                <td>{{ gc.volunteer_name }}</td>
+                                <td>{{ gc.gc_name }}</td>
+                                <td>{{ gc.date.strftime('%b') }} {{ gc.date.day }}</td>
+                                <td>{{ gc.teacher_name if gc.teacher_name else "N/A" }}</td>
+                                <td>{{ gc.teacher_email if gc.teacher_email else "N/A" }}</td>
+                                <td>
+                                    <div class="form-check form-switch visibility-switch">
+                                            <input class="form-check-input gc-switch" type="checkbox" role="switch"
+                                            data-gc-id="{{ gc.gc_id }}" aria-label="Hide {{ gc.gc_name }} from staff"{% if gc.hidden %}checked{% endif %}>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="/admin/edit-gc-{{ gc.gc_id }}" class="btn btn-warning">Edit or delete</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr><td class="table-empty" colspan="7">No gift card signups this month.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 {% endblock %}
 {% block scripts %}
     <script>

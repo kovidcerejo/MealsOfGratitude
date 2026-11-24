@@ -1,9 +1,9 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import state %}
 
-{% block title %}
-    Failed Login
-{% endblock %}
+{% block title %}Incorrect admin password | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
-    <p class="fs-4">Incorrect admin password. Visit the <a href="/">homepage</a> or <a href="/admin/login">try logging in again.</a></p>
+    {{ state('Incorrect admin password', 'Check your password and try signing in again.', '/admin/login', 'Back to sign in', 'error') }}
 {% endblock %}

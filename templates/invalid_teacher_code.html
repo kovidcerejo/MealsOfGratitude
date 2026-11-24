@@ -1,10 +1,9 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import state %}
 
-{% block title %}
-    Invalid Code
-{% endblock %}
+{% block title %}Incorrect staff code | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
-    <h1>Invalid Code</h1>
-    <p class="fs-4">Sorry, the code you entered was incorrect. <a href="/teachers/enter-code">Try again?</a></p>
+    {{ state('Incorrect staff code', 'Check your code and try again.', '/teachers/enter-code', 'Try again', 'error') }}
 {% endblock %}

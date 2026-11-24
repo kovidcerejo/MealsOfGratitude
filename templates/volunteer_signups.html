@@ -1,77 +1,96 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Current Signups
-{% endblock %}
+{% block title %}Current signups | Meals of Gratitude{% endblock %}
 
 {% block body %}
-    <h1>Current Signups</h1>
-    <p class=fs-5>Not what you're looking for? View <a href="/volunteers/signups/all-time">all signups</a> from this school year.</p>
-    <h3>Meals</h3>
-    <table class="container table table-striped w-75 table-bordered">
-        <thead>
-            <tr>
-                <th>Volunteer Name</th>
-                <th>Meal Name</th>
-                <th>Drop-off Date</th>
-                {% if date.volunteer_start <= today and today <= date.volunteer_end%}
-                    <th>Edit/Delete</th>
-                {% elif date.teacher_end < today %}
-                    <th>Teacher Name</th>
-                    <th>Teacher Email</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for meal in meals %}
-                <tr>
-                    <td>{{ meal.volunteer_name }}</td>
-                    <td><a href="/recipes/{{ meal.recipe_id }}">{{ meal.meal_name }}</a></td>
-                    <td>{{ meal.date.strftime('%b') }} {{ meal.date.day }}</td>
+    {{ page_header('Current signups', 'See who is bringing a meal or gift card this month.', '/volunteers/', 'Volunteer portal') }}
+    <div class="table-toolbar"><a class="text-action" href="/volunteers/signups/all-time">View signup history</a></div>
+    <div class="table-stack">
+        <section class="table-section">
+            <div class="section-heading">
+                <h2 id="table-heading-1">Meals</h2>
+            </div>
+            <p class="table-scroll-hint table-scroll-standard">Scroll to see all columns.</p>
+            <div class="table-wrap" role="region" aria-labelledby="table-heading-1" tabindex="0">
+                <table class="data-table data-table-standard">
+                    <thead>
+                        <tr>
+                            <th scope="col">Volunteer Name</th>
+                            <th scope="col">Meal Name</th>
+                            <th scope="col">Drop-off Date</th>
+                            {% if date.volunteer_start <= today and today <= date.volunteer_end%}
+                                <th scope="col">Edit or delete</th>
+                            {% elif date.teacher_end < today %}
+                                <th scope="col">Teacher Name</th>
+                                <th scope="col">Teacher Email</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for meal in meals %}
+                            <tr>
+                                <td>{{ meal.volunteer_name }}</td>
+                                <td><a href="/recipes/{{ meal.recipe_id }}">{{ meal.meal_name }}</a></td>
+                                <td>{{ meal.date.strftime('%b') }} {{ meal.date.day }}</td>
 
-                    {% if date.volunteer_start <= today and today <= date.volunteer_end%}
-                        <td>
-                            <a href="/volunteers/signups/edit-meal-{{ meal.meal_id}}" class="btn btn-warning">Edit/Delete</a>
-                        </td>
-                    {% elif date.teacher_end < today %}
-                        <td>{{ meal.teacher_name if meal.teacher_name else "N/A" }}</td>
-                        <td>{{ meal.teacher_email if meal.teacher_email else "N/A" }}</td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <h3>Gift Cards</h3>
-    <table class="container table table-striped w-75 table-bordered">
-        <thead>
-            <tr>
-                <th>Volunteer Name</th>
-                <th>Gift Card Name</th>
-                <th>Drop-off Date</th>
-                {% if date.volunteer_start <= today and today <= date.volunteer_end %}
-                    <th>Edit/Delete</th>
-                {% elif date.teacher_end < today %}
-                    <th>Teacher Name</th>
-                    <th>Teacher Email</th>
-                {% endif %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for gc in gcs %}
-                <tr>
-                    <td>{{ gc.volunteer_name }}</td>
-                    <td>{{ gc.gc_name }}</td>
-                    <td>{{ gc.date.strftime('%b') }} {{ gc.date.day }}</td>
-                    {% if date.volunteer_start <= today and today <= date.volunteer_end %}
-                        <td>
-                            <a href="/volunteers/signups/edit-gc-{{ gc.gc_id }}" class="btn btn-warning">Edit/Delete</a>
-                        </td>
-                    {% elif date.teacher_end < today %}
-                        <td>{{ gc.teacher_name if gc.teacher_name else "N/A" }}</td>
-                        <td>{{ gc.teacher_email if gc.teacher_email else "N/A" }}</td>
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                                {% if date.volunteer_start <= today and today <= date.volunteer_end%}
+                                    <td>
+                                        <a href="/volunteers/signups/edit-meal-{{ meal.meal_id}}" class="btn btn-warning">Edit or delete</a>
+                                    </td>
+                                {% elif date.teacher_end < today %}
+                                    <td>{{ meal.teacher_name if meal.teacher_name else "N/A" }}</td>
+                                    <td>{{ meal.teacher_email if meal.teacher_email else "N/A" }}</td>
+                                {% endif %}
+                            </tr>
+                        {% else %}
+                            <tr><td class="table-empty" colspan="{{ 4 if date.volunteer_start <= today and today <= date.volunteer_end else 5 if date.teacher_end < today else 3 }}">No meal signups this month.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section class="table-section">
+            <div class="section-heading">
+                <h2 id="table-heading-2">Gift cards</h2>
+            </div>
+            <p class="table-scroll-hint table-scroll-standard">Scroll to see all columns.</p>
+            <div class="table-wrap" role="region" aria-labelledby="table-heading-2" tabindex="0">
+                <table class="data-table data-table-standard">
+                    <thead>
+                        <tr>
+                            <th scope="col">Volunteer Name</th>
+                            <th scope="col">Gift Card Name</th>
+                            <th scope="col">Drop-off Date</th>
+                            {% if date.volunteer_start <= today and today <= date.volunteer_end %}
+                                <th scope="col">Edit or delete</th>
+                            {% elif date.teacher_end < today %}
+                                <th scope="col">Teacher Name</th>
+                                <th scope="col">Teacher Email</th>
+                            {% endif %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for gc in gcs %}
+                            <tr>
+                                <td>{{ gc.volunteer_name }}</td>
+                                <td>{{ gc.gc_name }}</td>
+                                <td>{{ gc.date.strftime('%b') }} {{ gc.date.day }}</td>
+                                {% if date.volunteer_start <= today and today <= date.volunteer_end %}
+                                    <td>
+                                        <a href="/volunteers/signups/edit-gc-{{ gc.gc_id }}" class="btn btn-warning">Edit or delete</a>
+                                    </td>
+                                {% elif date.teacher_end < today %}
+                                    <td>{{ gc.teacher_name if gc.teacher_name else "N/A" }}</td>
+                                    <td>{{ gc.teacher_email if gc.teacher_email else "N/A" }}</td>
+                                {% endif %}
+                            </tr>
+                        {% else %}
+                            <tr><td class="table-empty" colspan="{{ 4 if date.volunteer_start <= today and today <= date.volunteer_end else 5 if date.teacher_end < today else 3 }}">No gift card signups this month.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 {% endblock %}

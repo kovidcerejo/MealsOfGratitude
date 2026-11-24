@@ -1,0 +1,15 @@
+{% macro page_header(title, description='', back_href='', back_label='') %}
+<header class="page-heading">
+    {% if back_href %}<a class="back-link" href="{{ back_href }}">{{ back_label }}</a>{% endif %}
+    <h1>{{ title }}</h1>
+    {% if description %}<p class="page-lede">{{ description }}</p>{% endif %}
+</header>
+{% endmacro %}
+
+{% macro state(title, message, href='', label='', tone='info') %}
+<section class="state-panel state-{{ tone }}">
+    <h1>{{ title }}</h1>
+    <p>{{ message }}</p>
+    {% if href %}<a class="btn btn-primary" href="{{ href }}">{{ label }}</a>{% endif %}
+</section>
+{% endmacro %}

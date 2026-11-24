@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Admin Add Meal
-{% endblock %}
+{% block title %}Add a meal signup | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
-    <h1>Meal Signup</h1>
-    <form method="POST" action="/admin/add-meal" class="container" id="volunteer-form">
+    {{ page_header('Add a meal signup', '', '/admin/override-signups', 'Manage signups') }}
+    <form method="POST" action="/admin/add-meal" class="form-panel" id="volunteer-form">
             <div class="mb-3">
                 <label for="name" class="form-label">Volunteer Name</label>
                 <select name="name" class="form-select" id="name" required>
@@ -29,6 +29,6 @@
                 <label for="date" class="form-label">Drop-off Date</label>
                 <input type="date" name="date" class="form-control" id="date" required>
             </div>
-            <button type="submit" class="btn align-self-end mb-3 btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Save signup</button>
     </form>
 {% endblock %}

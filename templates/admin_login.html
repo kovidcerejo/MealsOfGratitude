@@ -1,15 +1,14 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Admin Login
-{% endblock %}
+{% block title %}Admin sign in | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
-    <h1>Admin Login</h1>
-    <p class="fs-4">Not an admin? Go to the <a href="/">homepage</a>.</p>
-    <form action="/admin/login" method="POST" class="container" id="admin-form">
+    {{ page_header('Admin sign in', '', "/", "Home") }}
+    <form action="/admin/login" method="POST" class="form-panel" id="admin-form">
         <label for="admin-pw" class="form-label">Admin Password</label>
         <input type="password" name="pw" autofocus autocomplete="off" class="form-control mb-3" id="admin-pw" required>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">Sign in</button>
     </form>
 {% endblock %}

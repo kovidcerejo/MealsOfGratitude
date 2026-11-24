@@ -1,23 +1,26 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Teachers
-{% endblock %}
+{% block title %}Staff Portal | Meals of Gratitude{% endblock %}
+{% block page_class %}portal-page{% endblock %}
 
 {% block body %}
-    <h1>Staff Portal</h1>
-    {% if dates.teacher_start and dates.teacher_start <= today %}
-        {% if today <= dates.teacher_end %}
-            <h3>Sign up to receive a meal or gift card.</h3>
-            <p class="fs-5">Please only sign up for one reward (meal or gift card) in a month.</p>
-            <p class="fs-5">Signup deadline: {{ dates.teacher_end.strftime("%B") }} {{ dates.teacher_end.day }}</p>
-            <a href="/teachers/reward-signup" class="btn btn-primary">Reward Signup</a>
+    {{ page_header('Staff portal', 'Thank you for all you do for our Northview community.') }}
+    <section class="portal-feature">
+        {% if dates.teacher_start and dates.teacher_start <= today %}
+            {% if today <= dates.teacher_end %}
+                <p class="eyebrow">Open through {{ dates.teacher_end.strftime("%B") }} {{ dates.teacher_end.day }}</p>
+                <h2>Choose a meal or gift card</h2>
+                <p>Please sign up for one reward each month.</p>
+                <a href="/teachers/reward-signup" class="btn btn-primary">View available rewards</a>
+            {% else %}
+                <h2>The signup deadline has passed</h2>
+                <p>You can still see this month’s signups.</p>
+                <a href="/teachers/reward-signup" class="btn btn-primary">View signups</a>
+            {% endif %}
         {% else %}
-            <h3>Signup Deadline Passed</h3>
-            <a href="/teachers/reward-signup" class="btn btn-primary">View Signups</a>
+            <h2>Signups haven’t opened yet</h2>
+            <p>Check back when this month’s meals and gift cards are available.</p>
         {% endif %}
-    {% else %}
-        <h3>Signups not yet available</h3>
-        <p class="fs-5">Sorry, teacher reward signups are not yet open. Come back later.</p>
-    {% endif %}
+    </section>
 {% endblock %}

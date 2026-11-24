@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Give Feedback
-{% endblock %}
-  
+{% block title %}Give feedback | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
+
 {% block body %}
-    <h1>Give Feedback</h1>
-    <form class="container" action="/teachers/give-feedback" method="POST" id="upload-recipe">
+    {{ page_header('Give feedback', '', '/teachers/', 'Staff portal') }}
+    <form class="form-panel" action="/teachers/give-feedback" method="POST" id="upload-recipe">
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" name="name" required placeholder="Name" id="name" class="form-control" autocomplete="name">
@@ -16,9 +16,9 @@
             <input type="email" name="email" required placeholder="Email" id="email" class="form-control" autocomplete="email">
         </div>
         <div class="mb-3">
-            <label for="feedback" class="form-label">Feedback/Comments</label>
-            <textarea id="feedback" class="form-control" name="feedback" placeholder="Feedback/Comments" required rows="5"></textarea>
+            <label for="feedback" class="form-label">Feedback</label>
+            <textarea id="feedback" class="form-control" name="feedback" placeholder="Feedback" required rows="5"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">Submit feedback</button>
     </form>
 {% endblock %}

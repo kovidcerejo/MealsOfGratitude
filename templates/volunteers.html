@@ -1,19 +1,33 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    Volunteers
-{% endblock %}
+{% block title %}Volunteer Portal | Meals of Gratitude{% endblock %}
+{% block page_class %}portal-page{% endblock %}
 
 {% block body %}
-    <h1 class="mb-3">Volunteer Portal</h1>
-    {% if date.volunteer_start <= today and today <= date.volunteer_end %}
-        <h3>{{ date.month_year }} Signups</h3>
-        <div class="mb-3">
-            <a href="/volunteers/meal-signup" class="btn btn-primary">Submit a meal</a>
-            <a href="/volunteers/gc-signup" class="btn btn-primary">Submit a gift card</a>
-        </div>
-    {% endif %}
-    <h3 class="mb-3">View <a href="/volunteers/signups">reward signups</a>.
-    </h3>
-    <h3>View <a href="/recipes">recipes</a> uploaded by volunteers.</h3>
+    {{ page_header('Volunteer portal', 'Bring a home-cooked meal or gift card to a member of our school staff.') }}
+    <section class="portal-feature">
+        {% if date.volunteer_start <= today and today <= date.volunteer_end %}
+            <p class="eyebrow">Signups open</p>
+            <h2>{{ date.month_year }} signups</h2>
+            <p>Choose what you’d like to give and select a drop-off date.</p>
+            <div class="button-row">
+                <a href="/volunteers/meal-signup" class="btn btn-primary">Submit a meal</a>
+                <a href="/volunteers/gc-signup" class="btn btn-outline-primary">Submit a gift card</a>
+            </div>
+        {% else %}
+            <h2>Signups are currently closed</h2>
+            <p>You can still check existing signups and browse the community cookbook.</p>
+        {% endif %}
+    </section>
+    <div class="portal-links">
+        <section>
+            <h2><a href="/volunteers/signups">Reward signups</a></h2>
+            <p>See meals and gift cards offered by volunteers.</p>
+        </section>
+        <section>
+            <h2><a href="/recipes">Community cookbook</a></h2>
+            <p>Browse recipes shared by Northview families.</p>
+        </section>
+    </div>
 {% endblock %}

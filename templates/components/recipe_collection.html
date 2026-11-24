@@ -1,0 +1,28 @@
+{% macro search() %}
+<div class="recipe-search">
+    <label for="recipeSearch">Search recipes</label>
+    <input type="text" id="recipeSearch" class="form-control" placeholder="Recipe or volunteer name">
+</div>
+{% endmacro %}
+
+{% macro collection(recipes, admin=false) %}
+<div id="noResults" class="empty-panel" role="status"{% if recipes %} style="display: none;"{% endif %}>
+    No recipes found.
+</div>
+<div class="{{ 'recipe-list' if admin else 'recipe-grid' }}">
+    {% for recipe in recipes %}
+        <article class="recipe-card">
+            <div class="{{ 'recipe-thumb' if admin else 'recipe-cover' }}{% if not recipe.image_url %} recipe-fallback{% endif %}">
+                <img src="{{ url_for('static', filename=recipe.image_url if recipe.image_url else 'images/MoG_logo.PNG') }}" alt="" loading="lazy" decoding="async">
+            </div>
+            <div class="recipe-caption">
+                <h2 class="card-title"><a href="/recipes/{{ recipe.id }}">{{ recipe.recipe_name }}</a></h2>
+                <p class="card-text">{{ recipe.volunteer_name }}</p>
+            </div>
+            {% if admin %}
+                <a href="/admin/edit-recipe-{{ recipe.id }}" class="btn btn-outline-primary">Edit or delete<span class="visually-hidden"> {{ recipe.recipe_name }}</span></a>
+            {% endif %}
+        </article>
+    {% endfor %}
+</div>
+{% endmacro %}

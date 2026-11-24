@@ -1,32 +1,30 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header, state %}
 
-{% block title %}
-    Volunteer Gift Card Signup
-{% endblock %}
+{% block title %}Volunteer gift card signup | Meals of Gratitude{% endblock %}
+{% block page_class %}narrow-page{% endblock %}
 
 {% block body %}
     {% if date.volunteer_start <= today and today <= date.volunteer_end %}
-        <h1>{{ date.month_year }} Gift Card Signup</h1>
-        <p>Note: Recommended minimum gift card amount is $25.</p>
-        <form method="POST" action="/volunteers/gc-signup" class="container" id="volunteer-form">
+        {{ page_header('%s gift card signup'|format(date.month_year), '', '/volunteers/', 'Volunteer portal') }}
+        <p class="info-note">The recommended minimum gift card amount is $25.</p>
+        <form method="POST" action="/volunteers/gc-signup" class="form-panel" id="volunteer-form">
                 <div class="mb-3">
                     <label for="typeahead-name" class="form-label">Volunteer Name</label>
                     <input type="text" name="name" id="typeahead-name" required autocomplete="off" class="form-control">
                 </div>
                 <div class="mb-3">
                     <label for="gc-name">Name of Gift Card</label>
-                    <input type="text" name="gc_name" class="form-control" required placeholder="Amazon, Target, etc."autocomplete="off">
+                    <input type="text" id="gc-name" name="gc_name" class="form-control" required placeholder="Amazon, Target, etc." autocomplete="off">
                 </div>
                 <div class="mb-3">
                     <label for="date">Drop-off Date</label>
                     <input type="date" name="date" class="form-control" id="date" min="{{ start }}" max="{{ end }}" required>
                 </div>
-                <button type="submit" class="btn align-self-end mb-3 btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Save signup</button>
         </form>
     {% else %}
-        <h1>Signup Deadline Passed</h1>
-        <p class="fs-5">Sorry, the deadline for submitting a signup has passed. You can still signup for next month when it opens.</p>
-        <a href="/volunteers" class="btn btn-primary">Volunteer Home</a>
+        {{ state('Signup deadline passed', 'Check the volunteer portal when the next signup window opens.', '/volunteers', 'Volunteer portal') }}
     {% endif %}
 {% endblock %}
 {% block scripts %}

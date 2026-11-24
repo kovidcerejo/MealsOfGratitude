@@ -1,36 +1,41 @@
 {% extends "layout.html" %}
 
-{% block title %}
-    {{ recipe.name }}
-{% endblock %}
+{% block title %}{{ recipe.recipe_name }} | Meals of Gratitude{% endblock %}
+{% block page_class %}recipe-detail-page{% endblock %}
 
 {% block body %}
-<div class="container py-5">
-    <div class="mx-auto" style="max-width: 800px;">
-        <h1>{{ recipe.recipe_name }}</h1>
-        <p class="fs-5 text-muted">Submitted by: {{ recipe.volunteer_name }}</p>
-        {% if recipe.image_url %}
-            <div class="d-flex justify-content-center mb-4">
-                <img src="{{ url_for('static', filename=recipe.image_url) }}" 
-                     class="img-fluid rounded">
+    <a href="/recipes/" class="back-link">Community cookbook</a>
+    <article>
+        <header class="recipe-intro{% if recipe.image_url %} recipe-intro-with-photo{% endif %}">
+            <div>
+                <h1>{{ recipe.recipe_name }}</h1>
+                <p class="page-lede">Shared by {{ recipe.volunteer_name }}</p>
             </div>
-        {% endif %}
-        <h3>Ingredients</h3>
-        <ul class="text-start fs-5">
-            {% for item in recipe.cleaned_ingredients.split('\n') %}
-                {% if item.strip() %}
-                    <li>{{ item }}</li>
-                {% endif %}
-            {% endfor %}
-        </ul>
-        <h3>Instructions</h3>
-        <ol class="text-start fs-5">
-            {% for step in recipe.cleaned_instructions.split('\n') %}
-                {% if step.strip() %}
-                    <li>{{ step }}</li>
-                {% endif %}
-            {% endfor %}
-        </ol>
-    </div>
-</div>
+            {% if recipe.image_url %}
+                <img src="{{ url_for('static', filename=recipe.image_url) }}" alt="{{ recipe.recipe_name }}" class="recipe-detail-photo">
+            {% endif %}
+        </header>
+        <div class="recipe-method">
+            <section class="recipe-ingredients">
+                <h2>Ingredients</h2>
+                <ul>
+                    {% for item in recipe.cleaned_ingredients.split('\n') %}
+                        {% if item.strip() %}
+                            <li>{{ item }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </section>
+            <section class="recipe-instructions">
+                <h2>Instructions</h2>
+                <ol>
+                    {% for step in recipe.cleaned_instructions.split('\n') %}
+                        {% if step.strip() %}
+                            <li>{{ step }}</li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+            </section>
+        </div>
+    </article>
 {% endblock %}

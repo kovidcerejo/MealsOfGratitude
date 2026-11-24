@@ -1,13 +1,32 @@
 {% extends "layout.html" %}
 
-{% block title %}
-    Meals of Gratitude
-{% endblock %}
+{% block title %}Meals of Gratitude{% endblock %}
+{% block page_class %}home-page{% endblock %}
 
 {% block body %}
-    <h1>Meals of Gratitude Homepage</h1>
-    <img src="static/images/MoG_logo.PNG" class="mb-2" style="width:300px">
-    <h4>Please select your role.</h3>
-    <a href="/teachers" class="btn btn-primary btn-lg">Staff</a>
-    <a href="/volunteers" class="btn btn-primary btn-lg">Volunteers</a>
+    <section class="home-hero">
+        <div class="hero-copy">
+            <p class="eyebrow">Northview High School</p>
+            <h1><span class="hero-first-line">A little something</span> to say <em>thank you.</em></h1>
+            <p class="hero-lede">Northview families share home-cooked meals and gift cards to show our staff how much we appreciate everything they do.</p>
+            <div class="button-row">
+                <a href="/volunteers" class="btn btn-primary">I’m a volunteer</a>
+                <a href="/teachers" class="btn btn-outline-primary">I’m a teacher</a>
+            </div>
+        </div>
+        <div class="hero-photo">
+            <img src="{{ url_for('static', filename='images/gratitude-table.jpg') }}" alt="A home cook sets a dish of roasted chicken and vegetables on a kitchen table." width="1200" height="1200" fetchpriority="high">
+        </div>
+    </section>
+
+    <section class="home-cookbook" aria-labelledby="cookbook-title">
+        <div>
+            <p class="eyebrow">The community cookbook</p>
+            <h2 id="cookbook-title">Good food is worth sharing.</h2>
+        </div>
+        <div>
+            <p>Find a dish to make for your next drop-off, or share a recipe your family loves.</p>
+            <a href="/recipes/" class="text-action">Browse recipes</a>
+        </div>
+    </section>
 {% endblock %}

@@ -1,51 +1,62 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header %}
 
-{% block title %}
-    View Deadlines
-{% endblock %}
+{% block title %}Deadlines | Meals of Gratitude{% endblock %}
 
 {% block body %}
-    <h1>View Deadlines</h1>
-    <a href="/admin/deadlines/set" class="btn btn-primary mb-3">Add deadlines for new month</a>
-    <h4 class="text-start">Notes for a forgetful Mugdha</h3>
-    <div class="container-sm text-start">
-    <ul>
-        <li>Teacher end date is 2 days before dropoff start</li>
-        <li>Teacher start date is the day you click "push to teachers"</li>
-    </ul>
-    </div>
-    <table class="container table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Month</th>
-                <th>Volunteer Start</th>
-                <th>Volunteer End</th>
-                <th>Dropoff Start</th>
-                <th>Dropoff End</th>
-                <th>Teacher Start</th>
-                <th>Teacher End</th>
-                <th>Edit/Delete</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for deadline in deadlines %}
-                <tr>
-                    <td>{{ deadline.month_year }}</td>
-                    <td>{{ deadline.volunteer_start.strftime('%B') }} {{ deadline.volunteer_start.day }}</td>
-                    <td>{{ deadline.volunteer_end.strftime('%B') }}  {{ deadline.volunteer_end.day }}</td>
-                    <td>{{ deadline.dropoff_start.strftime('%B') }}  {{ deadline.dropoff_start.day }}</td>
-                    <td>{{ deadline.dropoff_end.strftime('%B') }}  {{ deadline.dropoff_end.day }}</td>
-                    <td>
-                        {% if deadline.teacher_start %}
-                            {{ deadline.teacher_start.strftime('%B') }}  {{ deadline.teacher_start.day }}
+    {{ page_header('Deadlines', '', '/admin/', 'Dashboard') }}
+    <div class="table-toolbar"><a class="btn btn-primary" href="/admin/deadlines/set">Add monthly deadlines</a></div>
+    <aside class="info-note">
+        <h2>How staff signup dates are set</h2>
+        <ul>
+            <li>Staff signups open the day you choose <strong>Open staff signups</strong> on the dashboard.</li>
+            <li>Staff signups close two days before drop-offs begin.</li>
+        </ul>
+    </aside>
+    <div class="table-stack">
+        <section class="table-section">
+            <div class="section-heading">
+                <h2 id="table-heading-1">Monthly deadlines</h2>
+            </div>
+            <p class="table-scroll-hint table-scroll-wide">Scroll to see all columns.</p>
+            <div class="table-wrap" role="region" aria-labelledby="table-heading-1" tabindex="0">
+                <table class="data-table data-table-wide">
+                    <thead>
+                        <tr>
+                            <th scope="col">Month</th>
+                            <th scope="col">Volunteer Start</th>
+                            <th scope="col">Volunteer End</th>
+                            <th scope="col">Drop-off Start</th>
+                            <th scope="col">Drop-off End</th>
+                            <th scope="col">Teacher Start</th>
+                            <th scope="col">Teacher End</th>
+                            <th scope="col">Edit or delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for deadline in deadlines %}
+                            <tr>
+                                <td>{{ deadline.month_year }}</td>
+                                <td>{{ deadline.volunteer_start.strftime('%B') }} {{ deadline.volunteer_start.day }}</td>
+                                <td>{{ deadline.volunteer_end.strftime('%B') }}  {{ deadline.volunteer_end.day }}</td>
+                                <td>{{ deadline.dropoff_start.strftime('%B') }}  {{ deadline.dropoff_start.day }}</td>
+                                <td>{{ deadline.dropoff_end.strftime('%B') }}  {{ deadline.dropoff_end.day }}</td>
+                                <td>
+                                    {% if deadline.teacher_start %}
+                                        {{ deadline.teacher_start.strftime('%B') }}  {{ deadline.teacher_start.day }}
+                                    {% else %}
+                                        Not yet set.
+                                    {% endif %}
+                                </td>
+                                <td>{{ deadline.teacher_end.strftime('%B') }}  {{ deadline.teacher_end.day }}</td>
+                                <td><a href="/admin/deadlines/edit-{{ deadline.id }}" class="btn btn-warning">Edit or delete</a></td>
+                            </tr>
                         {% else %}
-                            Not yet set.
-                        {% endif %}
-                    </td>
-                    <td>{{ deadline.teacher_end.strftime('%B') }}  {{ deadline.teacher_end.day }}</td>
-                    <td><a href="/admin/deadlines/edit-{{ deadline.id }}" class="btn btn-warning">Edit/Delete</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+                            <tr><td class="table-empty" colspan="8">No monthly deadlines have been set.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </div>
 {% endblock %}

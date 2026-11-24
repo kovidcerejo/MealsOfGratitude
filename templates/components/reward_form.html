@@ -1,0 +1,15 @@
+{% macro signup(reward_id, reward_type, reward_name) %}
+<form action="/teachers/reward-signup" method="POST" class="reward-signup-form">
+    <div>
+        <label for="{{ reward_type }}-{{ reward_id }}-name">Full name</label>
+        <input id="{{ reward_type }}-{{ reward_id }}-name" type="text" name="name" required placeholder="Full Name" autocomplete="name" class="form-control">
+    </div>
+    <div>
+        <label for="{{ reward_type }}-{{ reward_id }}-email">Email</label>
+        <input id="{{ reward_type }}-{{ reward_id }}-email" type="email" name="email" required placeholder="Email" autocomplete="email" class="form-control">
+    </div>
+    <input type="hidden" name="id" value="{{ reward_id }}">
+    <input type="hidden" name="reward_type" value="{{ reward_type }}">
+    <button type="submit" class="btn btn-primary">Sign up<span class="visually-hidden"> for {{ reward_name }}</span></button>
+</form>
+{% endmacro %}

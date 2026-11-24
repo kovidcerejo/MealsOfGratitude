@@ -1,95 +1,62 @@
 {% extends "layout.html" %}
+{% from "components/ui.html" import page_header, state %}
+{% from "components/reward_form.html" import signup %}
 
-{% block title %}
-    Reward Signup
-{% endblock %}
+{% block title %}Staff Rewards | Meals of Gratitude{% endblock %}
 
 {% block body %}
     {% if dates.teacher_start and dates.teacher_start <= today %}
-        <h1>Meal Signup</h1>
-        <table class="container table table-striped w-50 table-bordered">
-            <thead>
-                <th>Meal Name</th>
-                <th>Drop-off Date</th>
-                <th>
-                    {% if today <= dates.teacher_end %}
-                        Signup
-                    {% else %}
-                        Teacher Signed Up
-                    {% endif %}
-                </th>
-            </thead>
-            <tbody>
+        {{ page_header('Staff rewards', 'Choose one meal or gift card for the month.' if today <= dates.teacher_end else 'This month’s signups have closed.', '/teachers/', 'Staff portal') }}
+        <section class="reward-section" aria-labelledby="meals-heading">
+            <h2 id="meals-heading">Meals</h2>
+            <div class="reward-grid">
                 {% for meal in meals %}
-                    <tr>
-                        <td><a href="/recipes/{{ meal.recipe_id }}">{{ meal.meal_name }}</a></td>
-                        <td>{{ meal.date.strftime("%b") }} {{ meal.date.day }}</td>
-                        <td>
-                            {% if today <= dates.teacher_end %}
-                                {% if meal.teacher_name is none %}
-                                    <form action="/teachers/reward-signup" method="POST" class="container">
-                                        <input type="text" name="name" required placeholder="Full Name" autocomplete="name" class="form-control mb-1">
-                                        <input type="email" name="email" required placeholder="Email" autocomplete="email" class="form-control mb-2">
-                                        <input type="hidden" name="id" value="{{ meal.meal_id }}">
-                                        <input type="hidden" name="reward_type" value="meals">
-                                        <button type="submit" class="btn btn-primary">Sign up</button>
-                                    </form>
-                                {% else %}
-                                    Signed up for by {{ meal.teacher_name }}.
-                                {% endif %}
-                            {% elif meal.teacher_name %}
-                                {{ meal.teacher_name }}
+                    <article class="reward-card">
+                        <h3><a href="/recipes/{{ meal.recipe_id }}">{{ meal.meal_name }}</a></h3>
+                        <p class="reward-date">Drop-off {{ meal.date.strftime("%b") }} {{ meal.date.day }}</p>
+                        {% if today <= dates.teacher_end %}
+                            {% if meal.teacher_name is none %}
+                                {{ signup(meal.meal_id, 'meals', meal.meal_name) }}
                             {% else %}
-                                N/A
+                                <p class="reward-status">Claimed by {{ meal.teacher_name }}</p>
                             {% endif %}
-                        </td>
-                    </tr>
+                        {% elif meal.teacher_name %}
+                            <p class="reward-status">Claimed by {{ meal.teacher_name }}</p>
+                        {% else %}
+                            <p class="reward-status">Unclaimed</p>
+                        {% endif %}
+                    </article>
+                {% else %}
+                    <p class="empty-panel">No meals are listed for this month.</p>
                 {% endfor %}
-            </tbody>
-        </table>
-        <h1>Gift Card Signup</h1>
-        <table class="container table table-striped w-50 table-bordered">
-            <thead>
-                <th>Gift Card Name</th>
-                <th>Drop-off Date</th>
-                <th>
-                    {% if today <= dates.teacher_end %}
-                        Signup
-                    {% else %}
-                        Teacher Signed Up
-                    {% endif %}
-                </th>
-            </thead>
-            <tbody>
+            </div>
+        </section>
+
+        <section class="reward-section" aria-labelledby="gift-cards-heading">
+            <h2 id="gift-cards-heading">Gift cards</h2>
+            <div class="reward-grid">
                 {% for gc in gcs %}
-                    <tr>
-                        <td>{{ gc.gc_name }}</td>
-                        <td>{{ gc.date.strftime("%b") }} {{ gc.date.day }}</td>
-                        <td>
-                            {% if today <= dates.teacher_end %}
-                                {% if gc.teacher_name is none %}
-                                    <form action="/teachers/reward-signup" method="POST" class="container">
-                                        <input type="text" name="name" required placeholder="Full Name" autocomplete="name" class="form-control mb-1">
-                                        <input type="email" name="email" required placeholder="Email" autocomplete="email" class="form-control mb-2">
-                                        <input type="hidden" name="id" value="{{ gc.gc_id }}">
-                                        <input type="hidden" name="reward_type" value="gift_cards">
-                                        <button type="submit" class="btn btn-primary">Sign up</button>
-                                    </form>
-                                {% else %}
-                                    Signed up for by {{ gc.teacher_name }}.
-                                {% endif %}
-                            {% elif gc.teacher_name %}
-                                {{ gc.teacher_name }}
+                    <article class="reward-card">
+                        <h3>{{ gc.gc_name }}</h3>
+                        <p class="reward-date">Drop-off {{ gc.date.strftime("%b") }} {{ gc.date.day }}</p>
+                        {% if today <= dates.teacher_end %}
+                            {% if gc.teacher_name is none %}
+                                {{ signup(gc.gc_id, 'gift_cards', gc.gc_name) }}
                             {% else %}
-                                N/A
+                                <p class="reward-status">Claimed by {{ gc.teacher_name }}</p>
                             {% endif %}
-                        </td>
-                    </tr>
+                        {% elif gc.teacher_name %}
+                            <p class="reward-status">Claimed by {{ gc.teacher_name }}</p>
+                        {% else %}
+                            <p class="reward-status">Unclaimed</p>
+                        {% endif %}
+                    </article>
+                {% else %}
+                    <p class="empty-panel">No gift cards are listed for this month.</p>
                 {% endfor %}
-            </tbody>
-        </table>
+            </div>
+        </section>
     {% else %}
-        <h1>Signups not yet available</h1>
-        <p class="fs-5">Sorry, teacher reward signups are not yet open. Come back later.</p>
+        {{ state('Signups haven’t opened yet', 'Check back when this month’s meals and gift cards are available.', '/teachers/', 'Staff portal') }}
     {% endif %}
 {% endblock %}

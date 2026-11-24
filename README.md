@@ -1,3 +1,2 @@
 # Meals of Gratitude
-## Website Description
 This website is meant to help Northview High School's Meals of Gratitude program. The program allows parent volunteers to cook meals or send gift cards to teachers at my school in order to show their appreciation. This website streamlines the process for the volunteers, teachers, and also the coordinator. The website consolidates the processes of volunteers sharing recipes and signing up to give meals or gift cards, teachers selecting meals/gift cards to receive, and the coordinator scheduling all of the dropoffs and sending reminder emails to both teachers and volunteers. In addition, the website has extra features on top of those to simplify the process and make it easier.
